@@ -1,0 +1,29 @@
+graph TwoGainsInSeries [[main]]
+{
+    // This section declares the inputs and outputs of the graph:
+    input  stream float in;
+    output stream float out;
+
+    // This section declares the nodes:
+    node gain1 = GainProcessor;  // declare two nodes, each one a GainProcessor
+    node gain2 = GainProcessor;
+
+    // And here we list the connections between the nodes:
+    connection in -> gain1 -> gain2 -> out;
+    // send our input through both gains, and the result to our output
+}
+
+processor GainProcessor
+{
+    input  stream float in;    // declare an input and output stream of floats
+    output stream float out;
+
+    void main()
+    {
+        loop   // infinite loop
+        {
+            out <- in * 0.5f;  // read our next input value, multiply by 0.5, and send it to our output
+            advance();         // advance to the next frame
+        }
+    }
+}

@@ -1,0 +1,12 @@
+graph AnnoyingBeep  [[main]]
+{
+    output stream float out;
+    input gain.volume;
+    input sine.frequencyIn;
+
+    node sine = std::oscillators::Sine (float, 440);
+    node gain = std::levels::SmoothedGain (float);
+
+    connection sine -> gain.in;
+    connection gain.out -> out;
+}

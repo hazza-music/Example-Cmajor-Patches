@@ -1,0 +1,35 @@
+
+graph Gain [[main]]
+{
+    input stream float in;
+    input gainProc.gain;
+    output stream float out;
+
+    node gainProc = GainProcessor;
+
+    connection in -> gainProc.in;
+    connection gainProc.out -> out;
+}
+
+processor GainProcessor
+{
+    input stream float in;
+    input event float gain [[ name: "Gain", min: 0.0f, max: 0.9f, init: 0.5f ]];
+
+    output stream float out;
+
+    event gain (float g) { gainVal = g; }
+
+    float gainVal;
+
+    void main()
+    {
+        loop
+        {
+            out <- in * gainVal;
+
+            advance();
+        }
+    }
+
+}
